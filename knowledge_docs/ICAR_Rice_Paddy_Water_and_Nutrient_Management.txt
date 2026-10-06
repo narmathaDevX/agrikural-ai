@@ -1,0 +1,31 @@
+# INDIAN COUNCIL OF AGRICULTURAL RESEARCH (ICAR)
+# NATIONAL RICE RESEARCH INSTITUTE (NRRI)
+# ADVISORY BULLETIN: NRRI-AGRO-RICE-2024
+# TITLE: Water-Saving Technologies and Nutrient Management in Lowland and Upland Rice
+
+## SECTION 1: WATER MANAGEMENT AND ALTERNATE WETTING AND DRYING (AWD)
+Rice (Oryza sativa) traditionally consumes 3000 to 5000 liters of water per kilogram of grain produced. In Southern India, implementing Alternate Wetting and Drying (AWD) saves 25% to 30% of irrigation water without reducing yield.
+AWD Implementation:
+- Field Water Tube: Install a 30 cm perforated PVC pipe (10 cm diameter) in the field with 20 cm underground and 10 cm above surface.
+- Water Level Thresholds:
+  - From transplanting until 1 week after transplanting: Maintain 2 to 3 cm ponded water to facilitate seedling establishment and suppress weed emergence.
+  - Tillering to Panicle Initiation: Allow water level inside the field water tube to drop to 15 cm below soil surface before re-flooding to 3-5 cm depth.
+  - Flowering Stage: Soil moisture stress during panicle flowering causes spikelet sterility. Maintain a continuous thin film of water (2 to 4 cm) from flowering to dough stage.
+  - Pre-harvest Drainage: Drain field completely 10 to 12 days prior to harvest to promote uniform ripening.
+
+## SECTION 2: NUTRIENT AND FERTILIZER MANAGEMENT
+Recommended Fertilizer Schedule for Medium Duration Varieties (120-135 days):
+- Total RDF: 120:40:40 kg N:P2O5:K2O per hectare.
+- Split Application:
+  - Basal dressing: 25% Nitrogen, 100% Phosphorus, 50% Potassium.
+  - Active Tillering (20-25 DAT): 50% Nitrogen.
+  - Panicle Initiation (40-45 DAT): 25% Nitrogen, 50% Potassium.
+- Zinc Deficiency Correction: Basal application of 25 kg Zinc Sulphate (ZnSO4) per hectare prevents Khaira disease and interveinal chlorosis in calcareous soils.
+
+## SECTION 3: PEST AND DISEASE MANAGEMENT
+1. Brown Planthopper (Nilaparvata lugens - BPH):
+   - Symptoms: "Hopper burn" - drying and wilting of plants in circular patches.
+   - Management: Avoid excessive nitrogen application. Drain water from fields for 3-4 days to disturb nymph development. Spray Triflumuron or Pymetrozine 50% WG @ 0.6 g/L.
+2. Blast (Magnaporthe oryzae):
+   - Symptoms: Spindle-shaped lesions with grey center on leaves; rotten neck.
+   - Management: Foliar spray of Tricyclazole 75% WP @ 0.6 g/L.

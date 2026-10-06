@@ -1,0 +1,49 @@
+# TAMIL NADU AGRICULTURAL UNIVERSITY (TNAU)
+# DEPARTMENT OF AGRONOMY & HORTICULTURAL EXTENSION
+# COIMBATORE, TAMIL NADU, INDIA
+# DOCUMENT ID: TNAU-HORT-TOMATO-2024
+# TITLE: Production Technology and Water Management in Tomato (Solanum lycopersicum)
+
+## SECTION 1: INTRODUCTION AND SOIL REQUIREMENTS
+Tomato is one of the most widely cultivated commercial vegetable crops in South India, especially in the Coimbatore, Dharmapuri, Krishnagiri, and Dindigul districts of Tamil Nadu.
+Optimal Soils:
+- Well-drained sandy loam and red loam soils rich in organic matter.
+- Soil pH range: 6.0 to 7.0 is ideal. Soils with pH below 5.5 require liming.
+- Drainage: Highly sensitive to water stagnation. Stagnant moisture exceeding 24 hours causes oxygen deprivation, root asphyxiation, and collar rot.
+
+## SECTION 2: IRRIGATION REQUIREMENTS AND SOIL MOISTURE THRESHOLDS
+Tomato requires precise soil moisture regulation across its growth stages:
+- Available Soil Moisture (ASM): Recommended available soil moisture should be maintained between 60% and 70% of field capacity.
+- Sensor Reading Guidance:
+  - Critical Deficit: Soil moisture below 30% indicates severe water deficit. Prolonged exposure causes blossom-end rot (calcium translocation blockage) and severe flower abortion. Immediate irrigation is necessary.
+  - Sub-optimal Deficit: Soil moisture between 30% and 44% warrants prompt irrigation, particularly if the crop is in flowering or fruiting stages.
+  - Optimal Range: Soil moisture between 45% and 65% represents optimal root aeration and transpiration. Maintain standard irrigation schedules.
+  - Excessive Saturation: Soil moisture above 75% for extended periods restricts root aeration, promotes Pythium and Rhizoctonia root rot, and creates favorable microclimates for fungal blights.
+
+Irrigation Scheduling:
+- Drip Irrigation: Recommended discharge is 2 to 3 liters per plant per day during vegetative stage, increasing to 4 to 5 liters per plant per day during peak fruit enlargement.
+- Surface/Furrow Irrigation: Irrigate immediately after transplanting, followed by life irrigation on the 3rd day, and subsequent irrigations at intervals of 5 to 7 days depending on soil texture.
+
+## SECTION 3: CLIMATIC PARAMETERS AND TEMPERATURE MANAGEMENT
+- Germination Temperature: 20°C to 26°C.
+- Favorable Vegetative Growth: Daytime temperatures between 24°C and 30°C, nighttime temperatures between 18°C and 22°C.
+- Heat Stress Threshold: Ambient temperatures exceeding 35°C severely impede pollen viability, reduce fruit set percentage, and trigger flower drop. Under heat stress above 35°C, farmers are advised to use 35% agro-shade nets or operate micro-sprinklers for 10 minutes at 1:00 PM to reduce canopy temperature.
+- Cold Stress Threshold: Temperatures below 12°C inhibit lycopene synthesis, resulting in mottled yellow-orange coloration.
+
+## SECTION 4: INTEGRATED NUTRIENT MANAGEMENT (INM)
+For Hybrid Cultivars (Target Yield: 60-80 t/ha):
+- Recommended Dose of Fertilizers (RDF): 150:100:100 kg N:P2O5:K2O per hectare.
+- Basal Application: Apply 50% of Nitrogen (75 kg), entire Phosphorus (100 kg), and 50% of Potassium (50 kg) along with 25 tonnes of well-decomposed Farmyard Manure (FYM) per hectare.
+- Top Dressing: Apply remaining 50% Nitrogen and Potassium in two equal split doses at 30 and 45 days after transplanting (DAT).
+- Fertigation Schedule: In drip-fertigated systems, apply water-soluble 19:19:19 and Calcium Nitrate weekly.
+
+## SECTION 5: PEST AND DISEASE MANAGEMENT
+1. Tomato Leaf Curl Virus (ToLCV):
+   - Vector: Whitefly (Bemisia tabaci).
+   - Symptoms: Upward curling of leaves, vein clearing, stunted growth.
+   - Management: Install yellow sticky traps (12 per acre). Spray Imidacloprid 17.8% SL @ 0.3 ml/L or Neem oil (10,000 ppm) @ 2 ml/L at first appearance of whiteflies.
+2. Early Blight (Alternaria solani):
+   - Symptoms: Concentric circular dark brown spots on older leaves ("target-board" appearance).
+   - Management: Foliar spray with Mancozeb 75% WP @ 2 g/L or Azoxystrobin @ 1 ml/L.
+3. Fruit Borer (Helicoverpa armigera):
+   - Management: Set up pheromone traps @ 5 per acre. Spray Bacillus thuringiensis (Bt) @ 2 g/L or Chlorantraniliprole 18.5% SC @ 0.3 ml/L.

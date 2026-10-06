@@ -1,0 +1,27 @@
+# TAMIL NADU AGRICULTURAL UNIVERSITY (TNAU)
+# HORTICULTURAL COLLEGE AND RESEARCH INSTITUTE
+# COIMBATORE & PERIYAKULAM, TAMIL NADU
+# DOCUMENT ID: TNAU-HORT-CHILLI-2024
+# TITLE: Intensive Production Protocol and Drip Irrigation Guidelines for Chilli (Capsicum annuum)
+
+## SECTION 1: SOIL & MOISTURE DYNAMICS
+Chilli is an important commercial spice cum vegetable crop grown across Ramanathapuram, Thoothukudi, Tirunelveli, and Erode districts.
+- Soil Suitability: Deep, friable, well-aerated sandy loam and black cotton soils with good drainage.
+- Critical Soil Moisture Parameters:
+  - Chilli cannot withstand standing water. Excessive moisture in the root zone leads to immediate wilting and Phytophthora root rot.
+  - Soil moisture between 50% and 65% of available water capacity promotes maximum flowering and fruit elongation.
+  - Soil moisture deficit below 35% triggers heavy flower and pin-head fruit drop.
+- Drip Irrigation Regimen: Operating drip irrigation for 1 to 1.5 hours daily during peak summer ensures uniform soil moisture in the active root zone (0-30 cm).
+
+## SECTION 2: NUTRIENT SCHEDULE
+- Recommended Dose: 120:60:60 kg N:P2O5:K2O per hectare for irrigated hybrids.
+- Apply 30 kg Nitrogen, 60 kg Phosphorus, and 30 kg Potassium as basal dose.
+- Top dress remaining Nitrogen and Potash in three equal splits at 30, 60, and 90 days after transplanting.
+
+## SECTION 3: COMMON PESTS AND MANAGEMENT
+1. Chilli Thrips (Scirtothrips dorsalis):
+   - Symptoms: Upward curling of leaves, boat-shaped appearance, scarred fruits.
+   - Management: Spray Fipronil 5% SC @ 1.5 ml/L or Spinosad 45% SC @ 0.3 ml/L.
+2. Anthracnose / Die-back (Colletotrichum capsici):
+   - Symptoms: Necrotic spots on ripe fruits with black acervuli rings; branches die from tip backwards.
+   - Management: Spray Difenoconazole 25% EC @ 0.5 ml/L or Copper Oxychloride @ 2.5 g/L.

@@ -1,0 +1,24 @@
+# KERALA AGRICULTURAL UNIVERSITY (KAU) & ICAR-CPCRI
+# THRISSUR & KASARAGOD, KERALA
+# DOCUMENT ID: KAU-CPCRI-COCONUT-2024
+# TITLE: Water Management, Micro-Irrigation, and Integrated Nutrition in Coconut (Cocos nucifera)
+
+## SECTION 1: WATER REQUIREMENTS AND SUMMER IRRIGATION
+In the humid tropical climate of Kerala and Tamil Nadu, water deficit during dry summer months severely curtails coconut nut production.
+- Daily Water Requirement: An adult bearing coconut palm requires 40 to 50 liters of water per day during non-rainy periods.
+- Drip Irrigation Method: 4 drippers/emitters placed at a distance of 1.0 to 1.5 meters around the base of the trunk at 10-15 cm soil depth.
+- Mulching: Mulch the basin area (1.8 m radius) with dried coconut leaves or coir pith (5 cm thickness) to conserve soil moisture and reduce root zone temperature by 3°C to 4°C.
+
+## SECTION 2: NUTRIENT APPLICATION
+For Adult Palms (Above 5 years):
+- N:P2O5:K2O @ 500:320:1200 grams per palm per year.
+- Magnesium Sulphate @ 500 g per palm per year to prevent leaf yellowing in acidic soils.
+- Split into two doses: 1/3rd in May-June (pre-monsoon) and 2/3rd in September-October (post-monsoon).
+
+## SECTION 3: PEST AND DISEASE SURVEILLANCE
+1. Rhinoceros Beetle (Oryctes rhinoceros):
+   - Symptoms: V-shaped geometric cuts on fronds; bore holes in spathes.
+   - Management: Hook out beetles from crowns using beetle hooks. Apply 250 g neem cake or neem seed kernel powder mixed with equal quantity of sand to the leaf axils.
+2. Red Palm Weevil (Rhynchophorus ferrugineus):
+   - Symptoms: Oozing of brown liquid from trunk bores, gnawing sound inside trunk.
+   - Management: Root feeding of Imidacloprid @ 10 ml in 10 ml water.
