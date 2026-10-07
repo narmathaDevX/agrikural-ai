@@ -3,6 +3,7 @@ import uuid
 import logging
 from typing import Optional, Dict, Any
 from app.config.settings import settings
+from app.services.tts_processor import tts_processor, strip_markdown_for_tts
 
 logger = logging.getLogger("agrikural.tts")
 
@@ -70,10 +71,12 @@ class TTSService:
                 "format": "mp3"
             }
         """
-        file_id = await self.adapter.synthesize(text, language)
+        # Convert AI Markdown response into clean plain text before TTS synthesis
+        clean_text = tts_processor.clean_for_tts(text, language=language)
+        file_id = await self.adapter.synthesize(clean_text, language)
         if not file_id:
             # Try fallback adapter
-            file_id = await LocalFallbackTTSAdapter().synthesize(text, language)
+            file_id = await LocalFallbackTTSAdapter().synthesize(clean_text, language)
 
         audio_url = f"/api/voice/audio/{file_id}" if file_id else None
         return {

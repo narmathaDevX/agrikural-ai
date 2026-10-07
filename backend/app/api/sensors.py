@@ -66,3 +66,51 @@ async def get_latest_readings(
         query = query.where(SensorReading.device_id == device_id)
     result = await db.execute(query)
     return [SensorReadingResponse.model_validate(r) for r in result.scalars().all()]
+
+@router.get("/status")
+async def get_sensor_agronomic_status(
+    device_id: str = Query("AGRI-DEV-001"),
+    crop: Optional[str] = Query(None),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Authoritative single source of truth for agricultural thresholds & status.
+    Compares live sensor values directly with verified RAG reference guidelines.
+    """
+    from app.services.context_service import context_service
+    from app.services.agricultural_decision_service import agricultural_decision_service
+    from app.services.rag_service import rag_service
+
+    # Fetch latest sensor readings for device
+    sensor_data = await context_service.get_latest_sensor_data(device_id, db)
+    effective_crop = crop or sensor_data.get("crop_type") or "Tomato"
+    readings = sensor_data.get("readings", {})
+
+    # Retrieve RAG chunks for crop
+    retrieved_chunks = rag_service.retrieve(
+        query=f"soil moisture temperature guidelines for {effective_crop}",
+        crop=effective_crop,
+        top_k=5
+    )
+
+    evaluation_context = agricultural_decision_service.evaluate_context(
+        crop=effective_crop,
+        readings=readings,
+        retrieved_chunks=retrieved_chunks
+    )
+
+    return {
+        "device_id": sensor_data.get("device_id") or device_id,
+        "crop": effective_crop,
+        "status": sensor_data.get("status", "disconnected"),
+        "connection_status": sensor_data.get("connection_status", "Disconnected"),
+        "last_seen": sensor_data.get("last_seen"),
+        "last_updated_human": sensor_data.get("last_updated_human", "No recent telemetry"),
+        "is_stale": sensor_data.get("is_stale", True),
+        "age_seconds": sensor_data.get("age_seconds"),
+        "evaluations": evaluation_context["evaluations"],
+        "agricultural_reference": evaluation_context["agricultural_reference"],
+        "computed_status": evaluation_context["computed_status"],
+        "readings": readings
+    }
+

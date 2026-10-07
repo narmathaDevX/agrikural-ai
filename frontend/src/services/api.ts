@@ -99,6 +99,13 @@ export const api = {
     return request(`/sensors/latest${q}`);
   },
 
+  async getSensorAgronomicStatus(deviceId?: string, crop?: string): Promise<any> {
+    const q = new URLSearchParams();
+    if (deviceId) q.append('device_id', deviceId);
+    if (crop) q.append('crop', crop);
+    return request(`/sensors/status?${q.toString()}`);
+  },
+
   // Analytics
   async getTimeseries(deviceId?: string, sensorType?: string, range: string = '24h'): Promise<any> {
     const params = new URLSearchParams();

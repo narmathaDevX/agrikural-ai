@@ -28,13 +28,25 @@ export interface Device {
   farm_name: string;
   location: string;
   crop_type: string;
-  status: 'online' | 'offline' | 'warning' | 'maintenance';
+  status: 'online' | 'offline' | 'disconnected' | 'warning' | 'maintenance';
   last_seen?: string;
+  connection_status?: string;
+  last_seen_human?: string;
+  is_online?: boolean;
+  age_seconds?: number;
   ip_address: string;
   firmware_version: string;
   metadata_json?: Record<string, any>;
   sensors: SensorInfo[];
-  latest_readings?: Record<string, { value: number; unit: string; timestamp: string }>;
+  latest_readings?: Record<string, {
+    value: number;
+    unit: string;
+    timestamp: string;
+    sensor_id?: string;
+    age_seconds?: number;
+    is_stale?: boolean;
+    last_updated_text?: string;
+  }>;
 }
 
 export interface SensorReading {

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Device, RAGQueryResponse } from '../types';
 import { api } from '../services/api';
+import { SafeMarkdown } from '../components/SafeMarkdown';
 
 interface VoiceStudioProps {
   device: Device | null;
@@ -303,9 +304,7 @@ export const VoiceStudio: React.FC<VoiceStudioProps> = ({ device }) => {
               <span className="text-[10px] font-mono font-bold uppercase text-emerald-400">
                 Grounded Agronomic Output ({result.language})
               </span>
-              <p className="text-sm font-medium text-slate-200 leading-relaxed whitespace-pre-wrap">
-                {result.translated_answer || result.answer}
-              </p>
+              <SafeMarkdown content={result.translated_answer || result.answer} />
             </div>
           </div>
 

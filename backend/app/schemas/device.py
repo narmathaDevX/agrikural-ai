@@ -31,6 +31,10 @@ class DeviceResponse(DeviceBase):
     last_seen: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
+    connection_status: Optional[str] = "online"
+    last_seen_human: Optional[str] = None
+    is_online: Optional[bool] = True
+    age_seconds: Optional[float] = None
     sensors: List[SensorResponse] = []
     latest_readings: Optional[Dict[str, Any]] = Field(default_factory=dict)
 

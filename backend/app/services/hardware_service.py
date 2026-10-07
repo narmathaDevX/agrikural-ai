@@ -53,11 +53,12 @@ class HardwareService:
             device.last_seen = timestamp
 
         # 2. Check/create sensor record
-        sensor_res = await db.execute(select(Sensor).where(Sensor.id == reading_data.sensor_id))
+        sensor_id = reading_data.sensor_id or f"{device_id}-{reading_data.sensor_type.replace('_', '-').upper()}"
+        sensor_res = await db.execute(select(Sensor).where(Sensor.id == sensor_id))
         sensor = sensor_res.scalar_one_or_none()
         if not sensor:
             sensor = Sensor(
-                id=reading_data.sensor_id,
+                id=sensor_id,
                 device_id=device_id,
                 sensor_type=reading_data.sensor_type,
                 name=reading_data.sensor_type.replace('_', ' ').title(),
@@ -66,11 +67,13 @@ class HardwareService:
             )
             db.add(sensor)
             await db.flush()
+        else:
+            sensor.is_active = True
 
         # 3. Store reading
         reading = SensorReading(
             device_id=device_id,
-            sensor_id=reading_data.sensor_id,
+            sensor_id=sensor_id,
             sensor_type=reading_data.sensor_type,
             value=reading_data.value,
             unit=reading_data.unit,
@@ -86,7 +89,7 @@ class HardwareService:
         await alert_service.evaluate_reading(
             device_id=device_id,
             sensor_type=reading_data.sensor_type,
-            sensor_id=reading_data.sensor_id,
+            sensor_id=sensor_id,
             value=reading_data.value,
             unit=reading_data.unit,
             db=db
@@ -103,7 +106,10 @@ class HardwareService:
                 "value": reading.value,
                 "unit": reading.unit,
                 "timestamp": reading.timestamp.isoformat(),
-                "location": reading.location
+                "location": reading.location,
+                "connection_status": "online",
+                "is_stale": False,
+                "last_updated_human": "Just now"
             }
         }
         await ws_manager.broadcast_json(ws_payload)

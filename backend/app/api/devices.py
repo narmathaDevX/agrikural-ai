@@ -21,8 +21,30 @@ async def list_devices(db: AsyncSession = Depends(get_db)):
     )
     devices = result.scalars().all()
     
+    now = datetime.now(timezone.utc)
     device_responses = []
     for d in devices:
+        # Check connection freshness
+        if d.last_seen:
+            last_seen_dt = d.last_seen if d.last_seen.tzinfo else d.last_seen.replace(tzinfo=timezone.utc)
+            age = (now - last_seen_dt).total_seconds()
+            is_online = age < 60
+            if age < 60:
+                human_text = "Just now"
+            elif age < 3600:
+                mins = max(1, int(age // 60))
+                human_text = f"Last updated {mins} minute{'s' if mins != 1 else ''} ago"
+            elif age < 86400:
+                hours = int(age // 3600)
+                human_text = f"Last updated {hours} hour{'s' if hours != 1 else ''} ago"
+            else:
+                days = int(age // 86400)
+                human_text = f"Last updated {days} day{'s' if days != 1 else ''} ago"
+        else:
+            age = 999999.0
+            is_online = False
+            human_text = "No telemetry received"
+
         # Fetch latest reading for each sensor type
         latest_readings = {}
         for s in d.sensors:
@@ -34,13 +56,24 @@ async def list_devices(db: AsyncSession = Depends(get_db)):
             )
             r = sub.scalar_one_or_none()
             if r:
+                r_dt = r.timestamp if r.timestamp.tzinfo else r.timestamp.replace(tzinfo=timezone.utc)
+                r_age = (now - r_dt).total_seconds()
                 latest_readings[s.sensor_type] = {
                     "value": r.value,
                     "unit": r.unit,
-                    "timestamp": r.timestamp.isoformat()
+                    "sensor_id": s.id,
+                    "timestamp": r.timestamp.isoformat(),
+                    "age_seconds": round(r_age, 1),
+                    "is_stale": r_age > 60 or not is_online,
+                    "last_updated_text": "Just now" if r_age < 60 else f"{max(1, int(r_age // 60))}m ago"
                 }
 
         resp = DeviceResponse.model_validate(d)
+        resp.status = "online" if is_online else "disconnected"
+        resp.connection_status = "Connected" if is_online else "Disconnected"
+        resp.is_online = is_online
+        resp.age_seconds = round(age, 1)
+        resp.last_seen_human = human_text
         resp.latest_readings = latest_readings
         device_responses.append(resp)
 
@@ -113,6 +146,27 @@ async def get_device(device_id: str, db: AsyncSession = Depends(get_db)):
     if not device:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Device not found")
 
+    now = datetime.now(timezone.utc)
+    if device.last_seen:
+        last_seen_dt = device.last_seen if device.last_seen.tzinfo else device.last_seen.replace(tzinfo=timezone.utc)
+        age = (now - last_seen_dt).total_seconds()
+        is_online = age < 60
+        if age < 60:
+            human_text = "Just now"
+        elif age < 3600:
+            mins = max(1, int(age // 60))
+            human_text = f"Last updated {mins} minute{'s' if mins != 1 else ''} ago"
+        elif age < 86400:
+            hours = int(age // 3600)
+            human_text = f"Last updated {hours} hour{'s' if hours != 1 else ''} ago"
+        else:
+            days = int(age // 86400)
+            human_text = f"Last updated {days} day{'s' if days != 1 else ''} ago"
+    else:
+        age = 999999.0
+        is_online = False
+        human_text = "No telemetry received"
+
     latest_readings = {}
     for s in device.sensors:
         sub = await db.execute(
@@ -123,13 +177,24 @@ async def get_device(device_id: str, db: AsyncSession = Depends(get_db)):
         )
         r = sub.scalar_one_or_none()
         if r:
+            r_dt = r.timestamp if r.timestamp.tzinfo else r.timestamp.replace(tzinfo=timezone.utc)
+            r_age = (now - r_dt).total_seconds()
             latest_readings[s.sensor_type] = {
                 "value": r.value,
                 "unit": r.unit,
-                "timestamp": r.timestamp.isoformat()
+                "sensor_id": s.id,
+                "timestamp": r.timestamp.isoformat(),
+                "age_seconds": round(r_age, 1),
+                "is_stale": r_age > 60 or not is_online,
+                "last_updated_text": "Just now" if r_age < 60 else f"{max(1, int(r_age // 60))}m ago"
             }
 
     resp = DeviceResponse.model_validate(device)
+    resp.status = "online" if is_online else "disconnected"
+    resp.connection_status = "Connected" if is_online else "Disconnected"
+    resp.is_online = is_online
+    resp.age_seconds = round(age, 1)
+    resp.last_seen_human = human_text
     resp.latest_readings = latest_readings
     return resp
 

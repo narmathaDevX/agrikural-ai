@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { History as HistoryIcon, Clock, MessageSquare, Volume2, Cpu, FileText, Trash2, ArrowRight } from 'lucide-react';
 import { Conversation } from '../types';
 import { api } from '../services/api';
+import { SafeMarkdown } from '../components/SafeMarkdown';
 
 export const History: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -122,12 +123,16 @@ export const History: React.FC = () => {
                         <span className="font-mono text-emerald-400">{m.detected_language}</span>
                       </div>
 
-                      <div className="whitespace-pre-wrap text-sm">{m.original_text}</div>
+                      {isUser ? (
+                        <div className="whitespace-pre-wrap text-sm">{m.original_text}</div>
+                      ) : (
+                        <SafeMarkdown content={m.original_text} />
+                      )}
 
                       {m.translated_output_text && m.translated_output_text !== m.original_text && (
                         <div className="pt-2 border-t border-slate-800 text-slate-300">
                           <span className="text-[10px] text-slate-400 font-bold block mb-0.5">Spoken Translation:</span>
-                          <p>{m.translated_output_text}</p>
+                          <SafeMarkdown content={m.translated_output_text} />
                         </div>
                       )}
 

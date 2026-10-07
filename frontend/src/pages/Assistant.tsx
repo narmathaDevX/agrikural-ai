@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Device, RAGQueryResponse, SourceCitation } from '../types';
 import { api } from '../services/api';
+import { SafeMarkdown } from '../components/SafeMarkdown';
 
 interface AssistantProps {
   device: Device | null;
@@ -296,7 +297,11 @@ export const Assistant: React.FC<AssistantProps> = ({ device, initialPrompt }) =
                     : 'bg-slate-900 border border-slate-800 text-slate-100 rounded-tl-none shadow-md'
                 }`}
               >
-                <div className="whitespace-pre-wrap">{msg.text}</div>
+                {isUser ? (
+                  <div className="whitespace-pre-wrap">{msg.text}</div>
+                ) : (
+                  <SafeMarkdown content={msg.text} />
+                )}
 
                 {/* Assistant Additions: Audio Playback Button */}
                 {!isUser && msg.audio_url && (

@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
@@ -30,12 +31,33 @@ class ContextService:
         sensor_data: Dict[str, Any] = {
             "device_id": device_id,
             "readings": {},
-            "status": "offline",
+            "status": "disconnected",
+            "connection_status": "Disconnected",
+            "last_updated_human": "No data received",
+            "is_stale": True,
             "last_updated": None
         }
 
-        if not device_id or not db:
+        if not db:
             return sensor_data
+
+        # Auto-resolve device_id if not provided to the most recently active hardware gateway
+        if not device_id:
+            try:
+                latest_dev_res = await db.execute(
+                    select(Device).order_by(desc(Device.last_seen)).limit(1)
+                )
+                latest_dev = latest_dev_res.scalar_one_or_none()
+                if latest_dev:
+                    device_id = latest_dev.id
+            except Exception:
+                pass
+
+        if not device_id:
+            return sensor_data
+
+        sensor_data["device_id"] = device_id
+        now = datetime.now(timezone.utc)
 
         try:
             # Query device info
@@ -46,15 +68,48 @@ class ContextService:
                 sensor_data["farm_name"] = device.farm_name
                 sensor_data["location"] = device.location
                 sensor_data["crop_type"] = device.crop_type
-                sensor_data["status"] = device.status
                 sensor_data["last_seen"] = device.last_seen.isoformat() if device.last_seen else None
 
-            # Fetch latest reading for each sensor
+                if device.last_seen:
+                    last_seen_dt = device.last_seen if device.last_seen.tzinfo else device.last_seen.replace(tzinfo=timezone.utc)
+                    age_seconds = (now - last_seen_dt).total_seconds()
+                    sensor_data["age_seconds"] = round(age_seconds, 1)
+
+                    if age_seconds < 60:
+                        sensor_data["status"] = "online"
+                        sensor_data["connection_status"] = "Connected"
+                        sensor_data["last_updated_human"] = "Just now"
+                        sensor_data["is_stale"] = False
+                    elif age_seconds < 3600:
+                        mins = max(1, int(age_seconds // 60))
+                        sensor_data["status"] = "disconnected"
+                        sensor_data["connection_status"] = "Disconnected"
+                        sensor_data["last_updated_human"] = f"Last updated {mins} minute{'s' if mins != 1 else ''} ago"
+                        sensor_data["is_stale"] = True
+                    elif age_seconds < 86400:
+                        hours = int(age_seconds // 3600)
+                        sensor_data["status"] = "disconnected"
+                        sensor_data["connection_status"] = "Disconnected"
+                        sensor_data["last_updated_human"] = f"Last updated {hours} hour{'s' if hours != 1 else ''} ago"
+                        sensor_data["is_stale"] = True
+                    else:
+                        days = int(age_seconds // 86400)
+                        sensor_data["status"] = "disconnected"
+                        sensor_data["connection_status"] = "Disconnected"
+                        sensor_data["last_updated_human"] = f"Last updated {days} day{'s' if days != 1 else ''} ago"
+                        sensor_data["is_stale"] = True
+                else:
+                    sensor_data["status"] = "disconnected"
+                    sensor_data["connection_status"] = "Disconnected"
+                    sensor_data["last_updated_human"] = "No recent telemetry"
+                    sensor_data["is_stale"] = True
+
+            # Fetch latest reading for each sensor type
             subq = await db.execute(
                 select(SensorReading)
                 .where(SensorReading.device_id == device_id)
                 .order_by(desc(SensorReading.timestamp))
-                .limit(20)
+                .limit(25)
             )
             readings = subq.scalars().all()
 
@@ -62,11 +117,26 @@ class ContextService:
             for r in readings:
                 if r.sensor_type not in seen_types:
                     seen_types.add(r.sensor_type)
+                    r_dt = r.timestamp if r.timestamp.tzinfo else r.timestamp.replace(tzinfo=timezone.utc)
+                    r_age = (now - r_dt).total_seconds()
+
+                    if r_age < 60:
+                        age_text = "Just now"
+                    elif r_age < 3600:
+                        mins = max(1, int(r_age // 60))
+                        age_text = f"Last updated {mins}m ago"
+                    else:
+                        age_text = f"Last updated {int(r_age // 3600)}h ago"
+
+                    is_r_stale = r_age > 60 or sensor_data.get("is_stale", False)
                     sensor_data["readings"][r.sensor_type] = {
                         "value": r.value,
                         "unit": r.unit,
                         "sensor_id": r.sensor_id,
-                        "timestamp": r.timestamp.isoformat()
+                        "timestamp": r.timestamp.isoformat(),
+                        "age_seconds": round(r_age, 1),
+                        "is_stale": is_r_stale,
+                        "last_updated_text": age_text
                     }
         except Exception as e:
             logger.error(f"Error fetching sensor context for {device_id}: {e}")
@@ -120,14 +190,36 @@ class ContextService:
         # 4. Format Sensor text
         sensor_blocks = []
         readings = sensor_context.get("readings", {})
+        is_stale = sensor_context.get("is_stale", False)
+        last_updated_human = sensor_context.get("last_updated_human", "recently")
+        device_id_str = sensor_context.get("device_id") or "Hardware Gateway"
+
         if readings:
+            if is_stale:
+                sensor_blocks.append(
+                    f"[HARDWARE ALERT: Physical Device {device_id_str} is DISCONNECTED ({last_updated_human}). "
+                    f"Readings are historical and must NOT be treated as current live conditions!]"
+                )
             for stype, info in readings.items():
-                sensor_blocks.append(f"- {stype.replace('_', ' ').title()}: {info['value']} {info['unit']}")
+                stale_tag = " [DISCONNECTED / STALE]" if info.get("is_stale") else " [LIVE]"
+                sensor_blocks.append(
+                    f"- {stype.replace('_', ' ').title()} ({info.get('sensor_id', 'sensor')}): {info['value']} {info['unit']} "
+                    f"({info.get('last_updated_text', 'recently')}){stale_tag}"
+                )
         else:
-            sensor_blocks.append("No active physical sensor readings available currently.")
-        
+            sensor_blocks.append(f"No active physical sensor readings available currently. Hardware {device_id_str} is offline.")
+
         sensor_context_text = "\n".join(sensor_blocks)
         farm_info_text = f"Farm: {sensor_context.get('farm_name', 'Field Station')} | Location: {effective_region} | Crop: {effective_crop}"
+
+        # 5. Deterministic Agricultural Decision Layer
+        from app.services.agricultural_decision_service import agricultural_decision_service
+        structured_agri_context = agricultural_decision_service.evaluate_context(
+            crop=effective_crop,
+            readings=readings,
+            retrieved_chunks=retrieved_chunks
+        )
+        sensor_context["structured_agricultural_context"] = structured_agri_context
 
         return {
             "question": question,
@@ -138,7 +230,8 @@ class ContextService:
             "sensor_context_text": sensor_context_text,
             "retrieved_chunks": retrieved_chunks,
             "rag_context_text": rag_context_text,
-            "sources": sources
+            "sources": sources,
+            "structured_agricultural_context": structured_agri_context
         }
 
 context_service = ContextService()

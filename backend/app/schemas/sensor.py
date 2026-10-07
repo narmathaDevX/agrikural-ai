@@ -25,7 +25,7 @@ class SensorResponse(SensorBase):
 
 class SensorReadingCreate(BaseModel):
     device_id: str
-    sensor_id: str
+    sensor_id: Optional[str] = None
     sensor_type: str
     value: float
     unit: str
